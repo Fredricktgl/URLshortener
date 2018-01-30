@@ -1,0 +1,59 @@
+<div class="container urlShortContain">
+    <div class="row urlShortRow">
+        <div class="col">
+            <img src="/images/urlShort.jpg" alt="Banner" class="urlShortBanner">
+        </div>
+    </div>
+
+
+    <div class="row urlShortRow">
+        <div class="col">
+
+            {{#if invalidUrl}}
+            <div class="alert alert-danger">
+                <h4 class="urlShortAlert">Invalid short URL <strong>{{invalidUrl}}</strong> entered, please try again</h4>
+            </div>
+            {{/if}}
+            
+            <form action="/URLshortener" method="post">
+            <input type="url" name="longUrl" placeholder="Copy & paste your URL here" class="urlShortTextbox">
+            <button type="submit">Submit</button>
+            </form>
+
+        </div>
+    </div>
+
+    {{#if result}}
+    <div class="row urlShortRow">
+        <div class="col">
+
+                <p class="urlp">The long URL you entered is: <strong>{{result.longUrl}}</strong></p>
+                <p class="urlp">The short URL created is: <a href="/{{result.shortUrl}}" class="urlShortHover urlShortLink">{{result.shortUrl}}</a></p>
+
+        </div>
+    </div>
+    {{/if}}
+
+</div>
+
+{{#if urlList}}
+<div class="container urlShortResult">
+
+    <div class="row urlShortResRow">
+        <div class="col-md-6 urlShortResCol">
+            <h4 class="urlShortResCol"><u>Original URL</u></h3>
+                {{#each urlList}}
+                <p class="urlShortResCol">{{longUrl}}</p>
+                {{/each}}
+        </div>
+
+        <div class="col-md-6 urlShortResCol">
+            <h4 class="urlShortResCol"><u>Short URL</u></h3>
+                {{#each urlList}}
+                <p class="urlShortResCol"><a href="/{{shortUrl}}" class="urlShortHover urlShortLink">{{shortUrl}}</a></p>
+                {{/each}}
+        </div>
+
+    </div>
+</div>
+{{/if}}
