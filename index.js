@@ -29,8 +29,8 @@ mongoose.connect('mongodb://testAdmin:123@ds115768.mlab.com:15768/my-mongodb-app
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
-  app.listen(3000, () => {
-    console.log("Listening on port 3000...")
+  app.listen((process.env.PORT || 5000), () => {
+    console.log("Listening on port 5000...")
   })
 });
 
@@ -63,9 +63,7 @@ app.post('/URLshortener', (req, res) => {
     if(checkLongUrl){
 
       url.find({}, (err, urlList) => {
-
         res.render('home', {result: checkLongUrl, urlList: urlList});
-
       })
 
     }else{
@@ -74,43 +72,29 @@ app.post('/URLshortener', (req, res) => {
       url.findOne({shortUrl: shortUrl}, (err, checkShortUrl) => {
 
         if(checkShortUrl){
-          
           let v = 0;
           for(let i=0; i<1+v; i++){
-            
             shortUrl = genShortUrl();
             v++;
-
           }
+         }else{
+          //If it is a new Long and Short URL, create a new record
+          url.create({
+            
+            longUrl: req.body.longUrl,
+            shortUrl: shortUrl,
 
-          }else{
+          }, (err, document) => {
 
-            //If it is a new Long and Short URL, create a new record
-            url.create({
-              
-              longUrl: req.body.longUrl,
-              shortUrl: shortUrl,
-
-            }, (err, document) => {
-
-              if(err){return(err)}
-              
+            if(err){return(err)}   
             url.find({}, (err, urlList) => {
-
               res.render('home', {result: document, urlList: urlList});
-
             })
-
           })
-
         }
-
       })
-
     }
-
   })
-
 })
 
 
@@ -124,13 +108,8 @@ app.get('/:inputUrl', (req,res) => {
     }else{
 
       url.find({}, (err, urlList) => {
-
       res.render('home', {invalidUrl: inputUrl, urlList: urlList});
-    
-       })
-
+      })
     }
-
   })
-
 })
