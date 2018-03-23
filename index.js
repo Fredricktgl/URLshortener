@@ -64,7 +64,7 @@ app.post('/URLshortener', (req, res) => {
 
       url.find({}, (err, urlList) => {
 
-      res.render('home', {result: checkLongUrl, urlList: urlList});
+        res.render('home', {result: checkLongUrl, urlList: urlList});
 
       })
 
@@ -73,9 +73,9 @@ app.post('/URLshortener', (req, res) => {
       //Check if short URL has been used
       url.findOne({shortUrl: shortUrl}, (err, checkShortUrl) => {
 
-        let v = 0;
         if(checkShortUrl){
           
+          let v = 0;
           for(let i=0; i<1+v; i++){
             
             shortUrl = genShortUrl();
